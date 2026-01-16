@@ -9,6 +9,18 @@
           "data": {
             "pathName": "Example Path"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoAim"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "New Path"
+          }
         }
       ]
     }

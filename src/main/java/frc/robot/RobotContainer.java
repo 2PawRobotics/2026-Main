@@ -122,9 +122,10 @@ public class RobotContainer {
         rintakeoutrunCmd.addRequirements(intakeSys);
         algeaoutrunCmd.addRequirements(intakeSys);
         algeaoutrunbwdCmd.addRequirements(intakeSys);
-        //pointCmd.addRequirements(swerveSys);
+        pointCmd.addRequirements(swerveSys);
             
         //Register Commands to PathPlanner
+        NamedCommands.registerCommand("autoAim", new PointCmd(swerveSys));
 
 
         configDriverBindings();
