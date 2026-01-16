@@ -90,7 +90,7 @@ public class RobotContainer {
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoSelector = AutoBuilder.buildAutoChooser();
 
-        SmartDashboard.putData("auto selector", autoSelector);
+        SmartDashboard.putData("auto select", autoSelector);
 
         //Initalize Commands
         lvl0Cmd = new Lvl0Cmd(liftSys);
@@ -125,19 +125,7 @@ public class RobotContainer {
         //pointCmd.addRequirements(swerveSys);
             
         //Register Commands to PathPlanner
-        NamedCommands.registerCommand("lvl4", new Lvl4Cmd(liftSys));
-        NamedCommands.registerCommand("lvl3", new Lvl3Cmd(liftSys));
-        NamedCommands.registerCommand("lvl2", new Lvl2Cmd(liftSys));
-        NamedCommands.registerCommand("lvl1", new Lvl1Cmd(liftSys));
-        NamedCommands.registerCommand("lvl0", new Lvl0Cmd(liftSys));
-        NamedCommands.registerCommand("releaseCoral", new ReleaseCoralCmd(endEffectorSys));
-        NamedCommands.registerCommand("conveyor", new ConveyorCmd(conveyorSys));
-        NamedCommands.registerCommand("Lintakeout", new LintakeoutCmd(intakeSys));
-        NamedCommands.registerCommand("Lintakeoutrun", new LintakeoutrunCmd(intakeSys));
-        NamedCommands.registerCommand("Rintakeout", new RintakeoutCmd(intakeSys));
-        NamedCommands.registerCommand("Rintakeoutrun", new RintakeoutrunCmd(intakeSys));
-        NamedCommands.registerCommand("Rintakein", new RintakeinCmd(intakeSys));
-        NamedCommands.registerCommand("Lintakein", new LintakeinCmd(intakeSys));
+
 
         configDriverBindings();
         configButtonPanel();

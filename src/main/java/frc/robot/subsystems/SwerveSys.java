@@ -37,8 +37,7 @@ public class SwerveSys extends SubsystemBase {
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
 
-    //PathPlanner config
-    RobotConfig config;
+   
 
     // Initializes swerve module objects
     private final SwerveModule frontLeftMod = 
@@ -255,7 +254,9 @@ public class SwerveSys extends SubsystemBase {
             setModuleStates(states);
         }
     }
-
+ //PathPlanner config
+    RobotConfig config;
+    
     public void runCharacterizationVolts(double volts) {
         frontLeftMod.runCharacterization(volts);
         frontRightMod.runCharacterization(volts);
