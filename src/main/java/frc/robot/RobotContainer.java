@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -124,8 +125,9 @@ public class RobotContainer {
         algeaoutrunbwdCmd.addRequirements(intakeSys);
         pointCmd.addRequirements(swerveSys);
             
-        //Register Commands to PathPlanner
-        NamedCommands.registerCommand("autoAim", new PointCmd(swerveSys));
+        // Register Commands to PathPlanner
+        //NamedCommands.registerCommand("PointCmd", new PointCmd(swerveSys));
+        new EventTrigger("Aim").whileTrue(new PointCmd(swerveSys));
 
 
         configDriverBindings();
