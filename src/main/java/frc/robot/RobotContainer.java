@@ -44,6 +44,8 @@ import frc.robot.subsystems.IntakeSys;
 import frc.robot.subsystems.LiftSys;
 import frc.robot.subsystems.SwerveSys;
 import frc.robot.commands.drivetrain.PointCmd;
+import frc.robot.commands.drivetrain.TestCmd;
+import frc.robot.subsystems.TestSys;
 
 public class RobotContainer {
     
@@ -53,6 +55,7 @@ public class RobotContainer {
     private final EndEffectorSys endEffectorSys = new EndEffectorSys();
     private final ConveyorSys conveyorSys = new ConveyorSys();
     private final IntakeSys intakeSys = new IntakeSys();
+    private final TestSys testSys = new TestSys();
 
     //Initialize joysticks.
     public final static CommandXboxController driverController = new CommandXboxController(ControllerConstants.driverGamepadPort);
@@ -75,6 +78,7 @@ public class RobotContainer {
     private final AlgeaoutrunCmd algeaoutrunCmd;
     private final AlgeaoutrunbwdCmd algeaoutrunbwdCmd;
     private final PointCmd pointCmd;
+    private final TestCmd testCmd;
 
     //Initialize auto selector.
     SendableChooser<Command> autoSelector = new SendableChooser<Command>();
@@ -87,6 +91,10 @@ public class RobotContainer {
         camera = new UsbCamera("driver camera", 2);
         
         CameraServer.startAutomaticCapture(camera);
+
+        // Register Commands to PathPlanner
+        NamedCommands.registerCommand("Aim", new PointCmd(swerveSys));
+        NamedCommands.registerCommand("Shoot", new TestCmd(testSys));
 
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoSelector = AutoBuilder.buildAutoChooser();
@@ -108,6 +116,7 @@ public class RobotContainer {
         algeaoutrunCmd = new AlgeaoutrunCmd(intakeSys);
         algeaoutrunbwdCmd = new AlgeaoutrunbwdCmd(intakeSys);
         pointCmd = new PointCmd(swerveSys);
+        testCmd = new TestCmd(testSys);
 
         //Add Requirements
         lvl0Cmd.addRequirements(liftSys);
@@ -125,9 +134,8 @@ public class RobotContainer {
         algeaoutrunbwdCmd.addRequirements(intakeSys);
         pointCmd.addRequirements(swerveSys);
             
-        // Register Commands to PathPlanner
-        //NamedCommands.registerCommand("PointCmd", new PointCmd(swerveSys));
-        new EventTrigger("Aim").whileTrue(new PointCmd(swerveSys));
+
+        //new EventTrigger("Aim").whileTrue(new PointCmd(swerveSys));
 
 
         configDriverBindings();
