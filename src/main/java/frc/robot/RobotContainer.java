@@ -20,28 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Constants.ButtonPanelConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.drivetrain.AlgeaoutrunCmd;
-import frc.robot.commands.drivetrain.AlgeaoutrunbwdCmd;
 import frc.robot.commands.drivetrain.ArcadeDriveCmd;
-import frc.robot.commands.drivetrain.ConveyorCmd;
-import frc.robot.commands.drivetrain.LintakeinCmd;
-import frc.robot.commands.drivetrain.LintakeoutCmd;
-import frc.robot.commands.drivetrain.LintakeoutrunCmd;
 import frc.robot.commands.drivetrain.LockCmd;
-import frc.robot.commands.drivetrain.Lvl0Cmd;
-import frc.robot.commands.drivetrain.Lvl1Cmd;
-import frc.robot.commands.drivetrain.Lvl2Cmd;
-import frc.robot.commands.drivetrain.Lvl3Cmd;
-import frc.robot.commands.drivetrain.Lvl4Cmd;
-import frc.robot.commands.drivetrain.ReleaseCoralCmd;
-import frc.robot.commands.drivetrain.RintakeinCmd;
-import frc.robot.commands.drivetrain.RintakeoutCmd;
-import frc.robot.commands.drivetrain.RintakeoutrunCmd;
-import frc.robot.commands.drivetrain.TurnToHeadingCmd;
-import frc.robot.subsystems.ConveyorSys;
-import frc.robot.subsystems.EndEffectorSys;
-import frc.robot.subsystems.IntakeSys;
-import frc.robot.subsystems.LiftSys;
 import frc.robot.subsystems.SwerveSys;
 import frc.robot.commands.drivetrain.PointCmd;
 import frc.robot.commands.drivetrain.TestCmd;
@@ -51,10 +31,6 @@ public class RobotContainer {
     
     // Initialize subsystems.
     private final SwerveSys swerveSys = new SwerveSys();
-    private final LiftSys liftSys = new LiftSys();
-    private final EndEffectorSys endEffectorSys = new EndEffectorSys();
-    private final ConveyorSys conveyorSys = new ConveyorSys();
-    private final IntakeSys intakeSys = new IntakeSys();
     private final TestSys testSys = new TestSys();
 
     //Initialize joysticks.
@@ -64,19 +40,6 @@ public class RobotContainer {
     
 
     //Name Commands
-    private final Lvl0Cmd lvl0Cmd;
-    private final Lvl1Cmd lvl1Cmd;
-    private final Lvl2Cmd lvl2Cmd;
-    private final Lvl3Cmd lvl3Cmd;
-    private final Lvl4Cmd lvl4Cmd;
-    private final ReleaseCoralCmd releaseCoralCmd;
-    private final ConveyorCmd conveyorCmd;
-    private final LintakeoutCmd lintakeoutCmd;
-    private final RintakeoutCmd rintakeoutCmd;
-    private final RintakeoutrunCmd rintakeoutrunCmd;
-    private final LintakeoutrunCmd lintakeoutrunCmd;
-    private final AlgeaoutrunCmd algeaoutrunCmd;
-    private final AlgeaoutrunbwdCmd algeaoutrunbwdCmd;
     private final PointCmd pointCmd;
     private final TestCmd testCmd;
 
@@ -102,36 +65,10 @@ public class RobotContainer {
         SmartDashboard.putData("auto select", autoSelector);
 
         //Initalize Commands
-        lvl0Cmd = new Lvl0Cmd(liftSys);
-        lvl1Cmd = new Lvl1Cmd(liftSys);
-        lvl2Cmd = new Lvl2Cmd(liftSys);
-        lvl3Cmd = new Lvl3Cmd(liftSys);
-        lvl4Cmd = new Lvl4Cmd(liftSys);
-        releaseCoralCmd = new ReleaseCoralCmd(endEffectorSys);
-        conveyorCmd = new ConveyorCmd(conveyorSys);
-        lintakeoutCmd = new LintakeoutCmd(intakeSys);
-        rintakeoutCmd = new RintakeoutCmd(intakeSys);
-        rintakeoutrunCmd = new RintakeoutrunCmd(intakeSys);
-        lintakeoutrunCmd = new LintakeoutrunCmd(intakeSys);
-        algeaoutrunCmd = new AlgeaoutrunCmd(intakeSys);
-        algeaoutrunbwdCmd = new AlgeaoutrunbwdCmd(intakeSys);
         pointCmd = new PointCmd(swerveSys);
         testCmd = new TestCmd(testSys);
 
         //Add Requirements
-        lvl0Cmd.addRequirements(liftSys);
-        lvl1Cmd.addRequirements(liftSys);
-        lvl2Cmd.addRequirements(liftSys);
-        lvl3Cmd.addRequirements(liftSys);
-        lvl4Cmd.addRequirements(liftSys);
-        releaseCoralCmd.addRequirements(endEffectorSys);
-        conveyorCmd.addRequirements(conveyorSys);
-        lintakeoutCmd.addRequirements(intakeSys);
-        lintakeoutrunCmd.addRequirements(intakeSys);
-        rintakeoutCmd.addRequirements(intakeSys);
-        rintakeoutrunCmd.addRequirements(intakeSys);
-        algeaoutrunCmd.addRequirements(intakeSys);
-        algeaoutrunbwdCmd.addRequirements(intakeSys);
         pointCmd.addRequirements(swerveSys);
             
 
@@ -144,22 +81,6 @@ public class RobotContainer {
     }
 
     private void configButtonPanel() {
-        JoystickButton lvl4ReefRight = new JoystickButton(ButtonPanel, ButtonPanelConstants.lvl4ReefRightPort);
-        JoystickButton lvl3ReefRight = new JoystickButton(ButtonPanel,  ButtonPanelConstants.lvl3ReefRightPort);
-        JoystickButton lvl2ReefRight = new JoystickButton(ButtonPanel,  ButtonPanelConstants.lvl2ReefRightPort);
-        JoystickButton lvl1ReefRight = new JoystickButton(ButtonPanel,  ButtonPanelConstants.lvl1ReefRightPort);
-        JoystickButton algeaIntake = new JoystickButton(ButtonPanel, ButtonPanelConstants.lvl4ReefLeftPort);
-        JoystickButton algeaExtake = new JoystickButton(ButtonPanel, ButtonPanelConstants.lvl3ReefLeftPort);
-        JoystickButton releaseCoral = new JoystickButton(ButtonPanel,  ButtonPanelConstants.releaseCoralPort);
-        JoystickButton conveyorRun = new JoystickButton(ButtonPanel, ButtonPanelConstants.conveyorRunPort);
-
-        lvl4ReefRight.whileTrue(new Lvl4Cmd(liftSys));
-        lvl3ReefRight.whileTrue(new Lvl3Cmd(liftSys));
-        lvl2ReefRight.whileTrue(new Lvl2Cmd(liftSys));
-        lvl1ReefRight.whileTrue(new Lvl1Cmd(liftSys));
-        releaseCoral.whileTrue(new ReleaseCoralCmd(endEffectorSys));
-        conveyorRun.whileTrue(new ConveyorCmd(conveyorSys));
-
     }
 
     public void configDriverBindings() {
@@ -176,10 +97,6 @@ public class RobotContainer {
         //Swerve locking system
         driverController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.triggerPressedThreshhold)
            .whileTrue(new LockCmd(swerveSys));
-        
-        driverController.a().whileTrue(new TurnToHeadingCmd(Rotation2d.fromDegrees(170), swerveSys));
-        driverController.b().whileTrue(new TurnToHeadingCmd(Rotation2d.fromDegrees(120), swerveSys));
-        driverController.x().whileTrue(new TurnToHeadingCmd(Rotation2d.fromDegrees(90), swerveSys));
 
         driverController.rightBumper().whileTrue(new PointCmd(swerveSys));
     }
