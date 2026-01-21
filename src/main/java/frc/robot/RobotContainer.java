@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -43,6 +44,8 @@ import frc.robot.subsystems.IntakeSys;
 import frc.robot.subsystems.LiftSys;
 import frc.robot.subsystems.SwerveSys;
 import frc.robot.commands.drivetrain.PointCmd;
+import frc.robot.commands.drivetrain.TestCmd;
+import frc.robot.subsystems.TestSys;
 
 public class RobotContainer {
     
@@ -52,6 +55,7 @@ public class RobotContainer {
     private final EndEffectorSys endEffectorSys = new EndEffectorSys();
     private final ConveyorSys conveyorSys = new ConveyorSys();
     private final IntakeSys intakeSys = new IntakeSys();
+    private final TestSys testSys = new TestSys();
 
     //Initialize joysticks.
     public final static CommandXboxController driverController = new CommandXboxController(ControllerConstants.driverGamepadPort);
@@ -74,6 +78,7 @@ public class RobotContainer {
     private final AlgeaoutrunCmd algeaoutrunCmd;
     private final AlgeaoutrunbwdCmd algeaoutrunbwdCmd;
     private final PointCmd pointCmd;
+    private final TestCmd testCmd;
 
     //Initialize auto selector.
     SendableChooser<Command> autoSelector = new SendableChooser<Command>();
@@ -87,10 +92,14 @@ public class RobotContainer {
         
         CameraServer.startAutomaticCapture(camera);
 
+        // Register Commands to PathPlanner
+        NamedCommands.registerCommand("Aim", new PointCmd(swerveSys));
+        NamedCommands.registerCommand("Shoot", new TestCmd(testSys));
+
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoSelector = AutoBuilder.buildAutoChooser();
 
-        SmartDashboard.putData("auto selector", autoSelector);
+        SmartDashboard.putData("auto select", autoSelector);
 
         //Initalize Commands
         lvl0Cmd = new Lvl0Cmd(liftSys);
@@ -107,6 +116,7 @@ public class RobotContainer {
         algeaoutrunCmd = new AlgeaoutrunCmd(intakeSys);
         algeaoutrunbwdCmd = new AlgeaoutrunbwdCmd(intakeSys);
         pointCmd = new PointCmd(swerveSys);
+        testCmd = new TestCmd(testSys);
 
         //Add Requirements
         lvl0Cmd.addRequirements(liftSys);
@@ -122,22 +132,11 @@ public class RobotContainer {
         rintakeoutrunCmd.addRequirements(intakeSys);
         algeaoutrunCmd.addRequirements(intakeSys);
         algeaoutrunbwdCmd.addRequirements(intakeSys);
-        //pointCmd.addRequirements(swerveSys);
+        pointCmd.addRequirements(swerveSys);
             
-        //Register Commands to PathPlanner
-        NamedCommands.registerCommand("lvl4", new Lvl4Cmd(liftSys));
-        NamedCommands.registerCommand("lvl3", new Lvl3Cmd(liftSys));
-        NamedCommands.registerCommand("lvl2", new Lvl2Cmd(liftSys));
-        NamedCommands.registerCommand("lvl1", new Lvl1Cmd(liftSys));
-        NamedCommands.registerCommand("lvl0", new Lvl0Cmd(liftSys));
-        NamedCommands.registerCommand("releaseCoral", new ReleaseCoralCmd(endEffectorSys));
-        NamedCommands.registerCommand("conveyor", new ConveyorCmd(conveyorSys));
-        NamedCommands.registerCommand("Lintakeout", new LintakeoutCmd(intakeSys));
-        NamedCommands.registerCommand("Lintakeoutrun", new LintakeoutrunCmd(intakeSys));
-        NamedCommands.registerCommand("Rintakeout", new RintakeoutCmd(intakeSys));
-        NamedCommands.registerCommand("Rintakeoutrun", new RintakeoutrunCmd(intakeSys));
-        NamedCommands.registerCommand("Rintakein", new RintakeinCmd(intakeSys));
-        NamedCommands.registerCommand("Lintakein", new LintakeinCmd(intakeSys));
+
+        //new EventTrigger("Aim").whileTrue(new PointCmd(swerveSys));
+
 
         configDriverBindings();
         configButtonPanel();
