@@ -23,14 +23,17 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.drivetrain.ArcadeDriveCmd;
 import frc.robot.commands.drivetrain.LockCmd;
 import frc.robot.subsystems.SwerveSys;
+import frc.robot.subsystems.SwerveRotation;
 import frc.robot.commands.drivetrain.PointCmd;
 import frc.robot.commands.drivetrain.TestCmd;
 import frc.robot.subsystems.TestSys;
+import frc.robot.commands.drivetrain.AutoAimCmd;
 
 public class RobotContainer {
     
     // Initialize subsystems.
     private final SwerveSys swerveSys = new SwerveSys();
+    private final SwerveRotation swerveRotation = new SwerveRotation(swerveSys);
     private final TestSys testSys = new TestSys();
 
     //Initialize joysticks.
@@ -42,6 +45,7 @@ public class RobotContainer {
     //Name Commands
     private final PointCmd pointCmd;
     private final TestCmd testCmd;
+    private final AutoAimCmd autoPointCmd;
 
     //Initialize auto selector.
     SendableChooser<Command> autoSelector = new SendableChooser<Command>();
@@ -56,7 +60,7 @@ public class RobotContainer {
         CameraServer.startAutomaticCapture(camera);
 
         // Register Commands to PathPlanner
-        NamedCommands.registerCommand("Aim", new PointCmd(swerveSys));
+        NamedCommands.registerCommand("Aim", new AutoAimCmd(swerveSys));
         NamedCommands.registerCommand("Shoot", new TestCmd(testSys));
 
         // Build an auto chooser. This will use Commands.none() as the default option.
@@ -64,12 +68,13 @@ public class RobotContainer {
 
         SmartDashboard.putData("auto select", autoSelector);
 
-        //Initalize Commands
-        pointCmd = new PointCmd(swerveSys);
+    //Initalize Commands
+        pointCmd = new PointCmd(swerveRotation);
         testCmd = new TestCmd(testSys);
+        autoPointCmd = new AutoAimCmd(swerveSys);
 
         //Add Requirements
-        pointCmd.addRequirements(swerveSys);
+    // pointCmd already requires the lightweight rotation subsystem. No need to add SwerveSys requirement.
             
 
         //new EventTrigger("Aim").whileTrue(new PointCmd(swerveSys));
@@ -98,7 +103,7 @@ public class RobotContainer {
         driverController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.triggerPressedThreshhold)
            .whileTrue(new LockCmd(swerveSys));
 
-        driverController.rightBumper().whileTrue(new PointCmd(swerveSys));
+    driverController.rightBumper().whileTrue(new PointCmd(swerveRotation));
     }
 
     public Command getAutonomousCommand() {

@@ -1,45 +1,50 @@
 package frc.robot.commands.drivetrain;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.SwerveSys;
+import frc.robot.subsystems.SwerveRotation;
 import frc.robot.util.limelight.LimelightHelpers;
+import java.util.Optional;
+import frc.robot.Constants.DriveConstants;
 
-public class PointCmd extends Command{
-    private final SwerveSys swerveSys;
-    private final double kP = 0.1; // Proportional constant for centering
-    private final double tolerance = 4; // Degress of error tolerance
+public class PointCmd extends Command {
+    private final SwerveRotation swerveRotation;
+    private final double kP = 10; // Proportional constant for centering (deg per deg)
+    private final double tolerance = 4; // Degrees of error tolerance
 
-    public PointCmd(SwerveSys swerveSys) {
-        this.swerveSys = swerveSys;
-        addRequirements(swerveSys);
+    public PointCmd(SwerveRotation swerveRotation) {
+        this.swerveRotation = swerveRotation;
+        addRequirements(swerveRotation);
     }
-    
+
     @Override
     public void execute() {
-        // Get the horizontal offset (tx) from the limelight
-        double tx = LimelightHelpers.getTX("limelight");
+        double tx = LimelightHelpers.getTX("limelight"); // degrees
 
-        // Calculate the rotational speed to center the robot
-        double rotationSpeed = kP * tx;
+        // Proportional controller (deg -> deg/sec)
+        double rotationDegPerSec = kP * tx;
 
-        // Limit the rotation speed to avoid excessive movement
-        rotationSpeed = Math.max(-7.5, Math.min(7.5, rotationSpeed));
+        // Convert to radians/sec
+        double rotationRadPerSec = Math.toRadians(rotationDegPerSec);
 
-        // Command the swerve drive to rotate
-        swerveSys.drive(0, 0, -rotationSpeed, false);
+        // Clamp to +/- maxTurnSpeedRadPerSec
+        rotationRadPerSec = Math.max(-94,
+                                     Math.min(DriveConstants.maxTurnSpeedRadPerSec, rotationRadPerSec));
 
-        System.out.println("doing things");
+        // Set the omega override (invert if your drive expects opposite sign)
+        swerveRotation.setOmegaOverride(Optional.of(-rotationRadPerSec));
     }
 
     @Override
     public boolean isFinished() {
-        // Check if the target is within the tolerance
+        if (DriverStation.isTeleop()) {
+            return false;
+        }
         return Math.abs(LimelightHelpers.getTX("limelight")) < tolerance;
     }
 
     @Override
     public void end(boolean interrupted) {
-        // Stop the robot when the command ends
-        swerveSys.drive(0, 0, 0, false);
+        swerveRotation.setOmegaOverride(Optional.empty());
     }
 }
