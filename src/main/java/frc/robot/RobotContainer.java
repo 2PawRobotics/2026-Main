@@ -28,6 +28,8 @@ import frc.robot.commands.drivetrain.PointCmd;
 import frc.robot.commands.drivetrain.TestCmd;
 import frc.robot.subsystems.TestSys;
 import frc.robot.commands.drivetrain.AutoAimCmd;
+import frc.robot.subsystems.IntakeSys;
+import frc.robot.commands.functions.IntakeCmd;
 
 public class RobotContainer {
     
@@ -35,6 +37,7 @@ public class RobotContainer {
     private final SwerveSys swerveSys = new SwerveSys();
     private final SwerveRotation swerveRotation = new SwerveRotation(swerveSys);
     private final TestSys testSys = new TestSys();
+    private final IntakeSys intakeSys = new IntakeSys();
 
     //Initialize joysticks.
     public final static CommandXboxController driverController = new CommandXboxController(ControllerConstants.driverGamepadPort);
@@ -46,6 +49,7 @@ public class RobotContainer {
     private final PointCmd pointCmd;
     private final TestCmd testCmd;
     private final AutoAimCmd autoPointCmd;
+    private final IntakeCmd intakeCmd;
 
     //Initialize auto selector.
     SendableChooser<Command> autoSelector = new SendableChooser<Command>();

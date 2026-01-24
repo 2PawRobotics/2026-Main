@@ -12,18 +12,7 @@ import edu.wpi.first.wpilibj.util.Color;
 public class Constants {
 
     public static final class ButtonPanelConstants {
-        public static final int lvl4ReefRightPort = 1;
-        public static final int lvl4ReefLeftPort = 2;
-        public static final int lvl3ReefRightPort = 3;
-        public static final int lvl3ReefLeftPort = 4;
-        public static final int lvl2ReefRightPort = 5;
-        public static final int lvl2ReefLeftPort = 6;
-        public static final int lvl1ReefLeftPort = 7;
-        public static final int lvl1ReefRightPort = 8;
-        public static final int releaseCoralPort = 9;
-        public static final int conveyorControlPort = 10;
-        public static final int conveyorRunPort = 11;
-        public static final int joystickPort = 13;
+        
     }
 
     public static final class CANDevices {
@@ -215,9 +204,9 @@ public class Constants {
 
     public class RollerConstants {
     
-        public static final int stallLimitAmps = 25;
-        public static final int freeLimitAmps = 50;
-        public static final int maxRPM = 1;
+        public static final int stallLimitAmps = 40;
+        public static final int freeLimitAmps = 3;
+        public static final int maxRPM = 6784;
 
         //public static final double gearRatio = 5;
 
