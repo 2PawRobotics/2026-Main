@@ -25,8 +25,8 @@ import frc.robot.commands.drivetrain.LockCmd;
 import frc.robot.subsystems.SwerveSys;
 import frc.robot.subsystems.SwerveRotation;
 import frc.robot.commands.drivetrain.PointCmd;
-import frc.robot.commands.drivetrain.TestCmd;
-import frc.robot.subsystems.TestSys;
+import frc.robot.commands.drivetrain.AutoShootCmd;
+import frc.robot.subsystems.ShooterSys;
 import frc.robot.commands.drivetrain.AutoAimCmd;
 import frc.robot.subsystems.IntakeSys;
 import frc.robot.commands.functions.IntakeCmd;
@@ -36,7 +36,7 @@ public class RobotContainer {
     // Initialize subsystems.
     private final SwerveSys swerveSys = new SwerveSys();
     private final SwerveRotation swerveRotation = new SwerveRotation(swerveSys);
-    private final TestSys testSys = new TestSys();
+    private final ShooterSys testSys = new ShooterSys();
     private final IntakeSys intakeSys = new IntakeSys();
 
     //Initialize joysticks.
@@ -47,7 +47,7 @@ public class RobotContainer {
 
     //Name Commands
     private final PointCmd pointCmd;
-    private final TestCmd testCmd;
+    private final AutoShootCmd testCmd;
     private final AutoAimCmd autoPointCmd;
     private final IntakeCmd intakeCmd;
 
@@ -65,7 +65,8 @@ public class RobotContainer {
 
         // Register Commands to PathPlanner
         NamedCommands.registerCommand("Aim", new AutoAimCmd(swerveSys));
-        NamedCommands.registerCommand("Shoot", new TestCmd(testSys));
+        NamedCommands.registerCommand("Shoot", new AutoShootCmd(testSys));
+        NamedCommands.registerCommand("Intake", new IntakeCmd(intakeSys));
 
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoSelector = AutoBuilder.buildAutoChooser();
@@ -74,8 +75,9 @@ public class RobotContainer {
 
     //Initalize Commands
         pointCmd = new PointCmd(swerveRotation);
-        testCmd = new TestCmd(testSys);
+        testCmd = new AutoShootCmd(testSys);
         autoPointCmd = new AutoAimCmd(swerveSys);
+        intakeCmd = new IntakeCmd(intakeSys);
 
         //Add Requirements
     // pointCmd already requires the lightweight rotation subsystem. No need to add SwerveSys requirement.
@@ -108,6 +110,7 @@ public class RobotContainer {
            .whileTrue(new LockCmd(swerveSys));
 
     driverController.rightBumper().whileTrue(new PointCmd(swerveRotation));
+    driverController.a().whileTrue(intakeCmd);
     }
 
     public Command getAutonomousCommand() {
