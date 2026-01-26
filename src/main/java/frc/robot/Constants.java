@@ -41,23 +41,8 @@ public class Constants {
         public static final int backRightSteerMtrId = 7;
         public static final int backRightDriveMtrId = 8;
 
-        //Rollers
-        public static final int m_topLeftRollerMtrId = 19;
-        public static final int m_bottomLeftRollerMtrId = 18;
-        public static final int m_topRightRollerMtrId = 17;
-        public static final int m_bottomRightRollerMtrId = 16;
-        public static final int m_rightIntakeMtrId = 15;
-        public static final int m_leftIntakeMtrId = 14;
-
-        //Lift
-        public static final int m_rightLiftMtrId = 30000;
-        public static final int m_leftLiftMtrId = 30001;
-
-        //Conveyor
-        public static final int m_testMtrId = 21;
-
-        //EndEffector
-        public static final int m_coralReleaseSevCnl = 9;
+        // Roller
+        public static final int rollerMtrId = 14;
        
     }
 
@@ -203,12 +188,31 @@ public class Constants {
     }
 
     public class RollerConstants {
+
+        public static final double rollerRPM = 1500;
+
+        public static final double rollerkP = 0.1;
+        public static final double rollerkI = 0.0;
+        public static final double rollerkD = 0.1;
+
     
         public static final int stallLimitAmps = 40;
         public static final int freeLimitAmps = 3;
         public static final int maxRPM = 6784;
 
-        //public static final double gearRatio = 5;
+    }
+
+    public class ShooterConstants {
+        
+        public static final double shooterRPM = 3000;
+
+        public static final double shooterkP = 0.1;
+        public static final double shooterkI = 0.0;
+        public static final double shooterkD = 0.1;
+
+        public static final int stallLimitAmps = 40;
+        public static final int freeLimitAmps = 3;
+        public static final int maxRPM = 6784;
 
     }
 
