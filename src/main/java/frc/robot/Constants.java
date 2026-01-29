@@ -43,6 +43,9 @@ public class Constants {
 
         // Roller
         public static final int rollerMtrId = 14;
+
+        // Shooter
+        public static final int shooterMtrId = 15;
        
     }
 
@@ -189,29 +192,29 @@ public class Constants {
 
     public class RollerConstants {
 
-        public static final double rollerRPM = 1500;
+        public static final double rollerRPM = 1750;
 
-        public static final double rollerkP = 0.1;
-        public static final double rollerkI = 0.0;
-        public static final double rollerkD = 0.1;
+        public static final double rollerkP = 0.0005;
+        public static final double rollerkI = 0;
+        public static final double rollerkD = 0;
 
     
         public static final int stallLimitAmps = 40;
-        public static final int freeLimitAmps = 3;
+        public static final int freeLimitAmps = 30;
         public static final int maxRPM = 6784;
 
     }
 
     public class ShooterConstants {
         
-        public static final double shooterRPM = 3000;
+        public static final double shooterRPM = 9000;
 
-        public static final double shooterkP = 0.1;
-        public static final double shooterkI = 0.0;
-        public static final double shooterkD = 0.1;
+        public static final double shooterkP = 0.00015;
+        public static final double shooterkI = 0;
+        public static final double shooterkD = 0;
 
         public static final int stallLimitAmps = 40;
-        public static final int freeLimitAmps = 3;
+        public static final int freeLimitAmps = 40;
         public static final int maxRPM = 6784;
 
     }

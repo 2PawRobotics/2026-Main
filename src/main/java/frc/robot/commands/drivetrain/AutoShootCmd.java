@@ -26,6 +26,7 @@ public class AutoShootCmd extends Command {
     @Override
     public void execute() {
         shooterSys.setShooterRPM(ShooterConstants.shooterRPM); // Set to desired RPM
+        System.out.println(shooterSys.getShooterRPM());
     }
 
     // Called once the command ends or is interrupted.

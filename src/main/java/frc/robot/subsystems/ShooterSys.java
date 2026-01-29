@@ -24,13 +24,13 @@ public class ShooterSys extends SubsystemBase {
 
     public ShooterSys() {
         
-        shooterMtr = new SparkFlex(CANDevices.rollerMtrId, MotorType.kBrushless);
+        shooterMtr = new SparkFlex(CANDevices.shooterMtrId, MotorType.kBrushless);
         shooterEnc = shooterMtr.getEncoder();
         shooterController = shooterMtr.getClosedLoopController();
 
         SparkFlexConfig shooterConfig = new SparkFlexConfig();
         shooterConfig
-            .inverted(false)
+            .inverted(true)
             .idleMode(IdleMode.kCoast)
             .smartCurrentLimit(ShooterConstants.stallLimitAmps, ShooterConstants.freeLimitAmps, ShooterConstants.maxRPM);
         shooterConfig.encoder

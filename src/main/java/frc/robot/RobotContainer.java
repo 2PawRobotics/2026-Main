@@ -36,7 +36,7 @@ public class RobotContainer {
     // Initialize subsystems.
     private final SwerveSys swerveSys = new SwerveSys();
     private final SwerveRotation swerveRotation = new SwerveRotation(swerveSys);
-    private final ShooterSys testSys = new ShooterSys();
+    private final ShooterSys shooterSys = new ShooterSys();
     private final IntakeSys intakeSys = new IntakeSys();
 
     //Initialize joysticks.
@@ -65,7 +65,7 @@ public class RobotContainer {
 
         // Register Commands to PathPlanner
         NamedCommands.registerCommand("Aim", new AutoAimCmd(swerveSys));
-        NamedCommands.registerCommand("Shoot", new AutoShootCmd(testSys));
+        NamedCommands.registerCommand("Shoot", new AutoShootCmd(shooterSys));
         NamedCommands.registerCommand("Intake", new IntakeCmd(intakeSys));
 
         // Build an auto chooser. This will use Commands.none() as the default option.
@@ -75,7 +75,7 @@ public class RobotContainer {
 
     //Initalize Commands
         pointCmd = new PointCmd(swerveRotation);
-        testCmd = new AutoShootCmd(testSys);
+        testCmd = new AutoShootCmd(shooterSys);
         autoPointCmd = new AutoAimCmd(swerveSys);
         intakeCmd = new IntakeCmd(intakeSys);
 
@@ -110,7 +110,8 @@ public class RobotContainer {
            .whileTrue(new LockCmd(swerveSys));
 
     driverController.rightBumper().whileTrue(new PointCmd(swerveRotation));
-    driverController.a().whileTrue(intakeCmd);
+    driverController.a().whileTrue(new IntakeCmd(intakeSys));
+    driverController.b().whileTrue(new AutoShootCmd(shooterSys));
     }
 
     public Command getAutonomousCommand() {
