@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
@@ -28,8 +29,11 @@ import frc.robot.commands.drivetrain.PointCmd;
 import frc.robot.commands.drivetrain.AutoShootCmd;
 import frc.robot.subsystems.ShooterSys;
 import frc.robot.commands.drivetrain.AutoAimCmd;
+import frc.robot.commands.drivetrain.RunShooterFFCmd;
 import frc.robot.subsystems.IntakeSys;
 import frc.robot.commands.functions.IntakeCmd;
+import frc.robot.subsystems.AgitatorSys;
+import frc.robot.commands.drivetrain.AgitatorCmd;
 
 public class RobotContainer {
     
@@ -38,6 +42,7 @@ public class RobotContainer {
     private final SwerveRotation swerveRotation = new SwerveRotation(swerveSys);
     private final ShooterSys shooterSys = new ShooterSys();
     private final IntakeSys intakeSys = new IntakeSys();
+    private final AgitatorSys agitatorSys = new AgitatorSys();
 
     //Initialize joysticks.
     public final static CommandXboxController driverController = new CommandXboxController(ControllerConstants.driverGamepadPort);
@@ -49,19 +54,21 @@ public class RobotContainer {
     private final PointCmd pointCmd;
     private final AutoShootCmd testCmd;
     private final AutoAimCmd autoPointCmd;
+    private final RunShooterFFCmd runShooterFFCmd;
     private final IntakeCmd intakeCmd;
+    private final AgitatorCmd agitatorCmd;
 
     //Initialize auto selector.
     SendableChooser<Command> autoSelector = new SendableChooser<Command>();
 
-    private UsbCamera camera;
+    //private UsbCamera camera;
 
     public RobotContainer() {
         RobotController.setBrownoutVoltage(DriveConstants.brownoutVoltage);
 
-        camera = new UsbCamera("driver camera", 2);
+        //camera = new UsbCamera("driver camera", 2);
         
-        CameraServer.startAutomaticCapture(camera);
+        //CameraServer.startAutomaticCapture(camera);
 
         // Register Commands to PathPlanner
         NamedCommands.registerCommand("Aim", new AutoAimCmd(swerveSys));
@@ -77,7 +84,9 @@ public class RobotContainer {
         pointCmd = new PointCmd(swerveRotation);
         testCmd = new AutoShootCmd(shooterSys);
         autoPointCmd = new AutoAimCmd(swerveSys);
+        runShooterFFCmd = new RunShooterFFCmd(shooterSys, 3000);
         intakeCmd = new IntakeCmd(intakeSys);
+        agitatorCmd = new AgitatorCmd(agitatorSys);
 
         //Add Requirements
     // pointCmd already requires the lightweight rotation subsystem. No need to add SwerveSys requirement.
@@ -87,11 +96,13 @@ public class RobotContainer {
 
 
         configDriverBindings();
-        configButtonPanel();
+        configOperatorBindings();
 
     }
 
-    private void configButtonPanel() {
+    private void configOperatorBindings() {
+
+        
     }
 
     public void configDriverBindings() {
@@ -110,8 +121,13 @@ public class RobotContainer {
            .whileTrue(new LockCmd(swerveSys));
 
     driverController.rightBumper().whileTrue(new PointCmd(swerveRotation));
-    driverController.a().whileTrue(new IntakeCmd(intakeSys));
-    driverController.b().whileTrue(new AutoShootCmd(shooterSys));
+    driverController.leftBumper().whileTrue(new IntakeCmd(intakeSys));
+    driverController.rightTrigger().whileTrue(new RunShooterFFCmd(shooterSys, 4000));
+    driverController.a().whileTrue(new AgitatorCmd(agitatorSys));
+    //driverController.a().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    //driverController.b().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    //driverController.y().whileTrue(shooterSys.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    //driverController.x().whileTrue(shooterSys.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {
