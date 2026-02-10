@@ -280,6 +280,10 @@ public class Constants {
         public static final String backLimelightName = "limelight";
 
         public static final double targetAreaPercentThreshold = 0.15;
+
+        public static final double tagHight = 44.25;
+        public static final double limelightHight = 21;
+        public static final double limelightAngle = 25;
     }
 
     public class FieldConstants {

@@ -122,7 +122,7 @@ public class RobotContainer {
 
     driverController.rightBumper().whileTrue(new PointCmd(swerveRotation));
     driverController.leftBumper().whileTrue(new IntakeCmd(intakeSys));
-    driverController.rightTrigger().whileTrue(new RunShooterFFCmd(shooterSys, 4000));
+    driverController.rightTrigger().whileTrue(new RunShooterFFCmd(shooterSys, shooterSys.desiredRPM()));
     driverController.a().whileTrue(new AgitatorCmd(agitatorSys));
     //driverController.a().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     //driverController.b().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
@@ -161,6 +161,10 @@ public class RobotContainer {
         SmartDashboard.putNumber("BR offset CANCoder degrees", swerveSys.getCanCoderAngles()[3].getDegrees() - DriveConstants.backRightModOffset.getDegrees());
 
         SmartDashboard.putNumber("drive voltage", swerveSys.getAverageDriveVoltage());
+
+        SmartDashboard.putNumber("Limelight Distance", shooterSys.getDistance());
+        SmartDashboard.putNumber("Shooter RPM", shooterSys.getShooterRPM());
+        SmartDashboard.putNumber("Desired Shooter RPM", shooterSys.desiredRPM());
 
     }   
 }

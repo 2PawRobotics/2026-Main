@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.VisionConstants;
+import frc.robot.util.limelight.LimelightHelpers;
+import frc.robot.util.limelight.LimelightHelpers.LimelightTarget_Barcode;
 import frc.robot.Constants.CANDevices;
 
 import static edu.wpi.first.units.Units.Radians;
@@ -109,6 +112,26 @@ public class ShooterSys extends SubsystemBase {
 
     public void stop() {
         shooterController.setReference(0, ControlType.kVelocity);
+    }
+
+    // h2-h1/tan(a1+a2)
+    public double getDistance() {
+        double angleRadians = Math.toRadians(Math.abs(LimelightHelpers.getTY(VisionConstants.frontLimelightName)) + VisionConstants.limelightAngle);
+        return ((VisionConstants.tagHight - VisionConstants.limelightHight) / 
+        (Math.tan(angleRadians))/12);
+    }
+
+    public double desiredRPM() {
+        
+        double minRPM = 2750;
+        double distance = getDistance();
+
+        if(distance <= 3) {
+            return minRPM;
+        }
+        else {
+            return minRPM + ((distance-3) * 250);
+        }
     }
 
     /**
