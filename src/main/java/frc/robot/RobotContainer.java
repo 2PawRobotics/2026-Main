@@ -162,7 +162,8 @@ public class RobotContainer {
 
         SmartDashboard.putNumber("drive voltage", swerveSys.getAverageDriveVoltage());
 
-        SmartDashboard.putNumber("Limelight Distance", shooterSys.getDistance());
+        SmartDashboard.putNumber("Limelight Distance Ft", shooterSys.getDistanceInFeet());
+        SmartDashboard.putNumber("Limelight Distance In", shooterSys.getDistanceInInches());
         SmartDashboard.putNumber("Shooter RPM", shooterSys.getShooterRPM());
         SmartDashboard.putNumber("Desired Shooter RPM", shooterSys.desiredRPM());
 

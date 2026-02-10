@@ -281,9 +281,9 @@ public class Constants {
 
         public static final double targetAreaPercentThreshold = 0.15;
 
-        public static final double tagHight = 44.25;
-        public static final double limelightHight = 21;
-        public static final double limelightAngle = 25;
+        public static final double tagHeight = 44.5;
+        public static final double limelightHeight = 21.25;
+        public static final double limelightAngle = 29.5;
     }
 
     public class FieldConstants {

@@ -114,17 +114,27 @@ public class ShooterSys extends SubsystemBase {
         shooterController.setReference(0, ControlType.kVelocity);
     }
 
-    // h2-h1/tan(a1+a2)
-    public double getDistance() {
-        double angleRadians = Math.toRadians(Math.abs(LimelightHelpers.getTY(VisionConstants.frontLimelightName)) + VisionConstants.limelightAngle);
-        return ((VisionConstants.tagHight - VisionConstants.limelightHight) / 
-        (Math.tan(angleRadians))/12);
+    public double getDistanceInInches() {
+        double ty =
+        LimelightHelpers.getTY(VisionConstants.frontLimelightName);
+
+        double totalAngleDeg = 
+        VisionConstants.limelightAngle + ty;
+
+        double totalAngleRad = 
+        Math.toRadians(totalAngleDeg);
+
+        return (VisionConstants.tagHeight - VisionConstants.limelightHeight) / Math.tan(totalAngleRad);
+    }
+
+    public double getDistanceInFeet() {
+        return getDistanceInInches() / 12.0;
     }
 
     public double desiredRPM() {
         
         double minRPM = 2750;
-        double distance = getDistance();
+        double distance = getDistanceInFeet();
 
         if(distance <= 3) {
             return minRPM;
