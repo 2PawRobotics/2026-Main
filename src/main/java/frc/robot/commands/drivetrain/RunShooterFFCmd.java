@@ -10,14 +10,12 @@ import frc.robot.subsystems.ShooterSys;
 
 public class RunShooterFFCmd extends Command {
     private final ShooterSys shooter;
-    private final double targetRPM;
     private final PIDController pid;
     private final SimpleMotorFeedforward ff;
 
     // require shooter so command has exclusive control
-    public RunShooterFFCmd(ShooterSys shooter, double targetRPM) {
+    public RunShooterFFCmd(ShooterSys shooter) {
         this.shooter = shooter;
-        this.targetRPM = targetRPM;
         // PID gains expect units of V/(rad/s) error if using rad/s; using same kP as your velocity PID may need retune
         this.pid = new PIDController(ShooterConstants.shooterkP, ShooterConstants.shooterkI, ShooterConstants.shooterkD);
         // ff constants: ks, kv, ka. Ensure kv/ka units match rad/s (see note below)
@@ -33,7 +31,7 @@ public class RunShooterFFCmd extends Command {
     @Override
     public void execute() {
         // convert RPM -> rad/s
-        double targetRadPerSec = targetRPM * 2.0 * Math.PI / 60.0;
+        double targetRadPerSec = shooter.desiredRPM() * 2.0 * Math.PI / 60.0;
         //double measuredRPM = shooter.getShooterRPM();
         //double measuredRadPerSec = measuredRPM * 2.0 * Math.PI / 60.0;
 

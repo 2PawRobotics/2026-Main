@@ -84,7 +84,7 @@ public class RobotContainer {
         pointCmd = new PointCmd(swerveRotation);
         testCmd = new AutoShootCmd(shooterSys);
         autoPointCmd = new AutoAimCmd(swerveSys);
-        runShooterFFCmd = new RunShooterFFCmd(shooterSys, 3000);
+        runShooterFFCmd = new RunShooterFFCmd(shooterSys);
         intakeCmd = new IntakeCmd(intakeSys);
         agitatorCmd = new AgitatorCmd(agitatorSys);
 
@@ -122,8 +122,8 @@ public class RobotContainer {
 
     driverController.rightBumper().whileTrue(new PointCmd(swerveRotation));
     driverController.leftBumper().whileTrue(new IntakeCmd(intakeSys));
-    driverController.rightTrigger().whileTrue(new RunShooterFFCmd(shooterSys, shooterSys.desiredRPM()));
     driverController.a().whileTrue(new AgitatorCmd(agitatorSys));
+    driverController.rightTrigger().whileTrue(new RunShooterFFCmd(shooterSys));
     //driverController.a().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     //driverController.b().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
     //driverController.y().whileTrue(shooterSys.sysIdDynamic(SysIdRoutine.Direction.kForward));

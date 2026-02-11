@@ -35,7 +35,7 @@ public class AgitatorSys extends SubsystemBase {
     }
 
     public void setAgitatorRPM() {
-        agitatorMtr.set(0.22);
+        agitatorMtr.set(0.5);
     }
 
     public void getAgitatorRPM() {
