@@ -137,7 +137,7 @@ public class ShooterSys extends SubsystemBase {
 
     public double desiredRPM() {
         
-        double minRPM = 2750;
+        double minRPM = 3000;
         double distance = getDistanceInFeet();
 
         if(distance <= 3) {
