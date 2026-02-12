@@ -115,7 +115,11 @@ public class SwerveSys extends SubsystemBase {
             getModulePositions(),
             new Pose2d(),
             VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(0.25)),
-            VecBuilder.fill(0.35, 0.35, Units.degreesToRadians(30.0)));
+            VecBuilder.fill(0.35, 0.35, Units.degreesToRadians(40.0)));
+
+    private final LimelightPoseEstimator[] limelightPoseEstimators = new LimelightPoseEstimator[] {
+        new LimelightPoseEstimator(VisionConstants.frontLimelightName)
+    };
 
     public void resetPPPose(Pose2d pose) {
         setPose(pose);
@@ -181,25 +185,12 @@ public class SwerveSys extends SubsystemBase {
         // Updates the odometry every 20ms
         poseEstimator.update(imu.getRotation2d(), getModulePositions());
 
-        /*for(LimelightPoseEstimator limelightPoseEstimator : limelightPoseEstimators) {
+        for(LimelightPoseEstimator limelightPoseEstimator : limelightPoseEstimators) {
             Optional<Pose2d> limelightPose = limelightPoseEstimator.getRobotPose();
             if(limelightPose.isPresent()) {
                 poseEstimator.addVisionMeasurement(limelightPose.get(), limelightPoseEstimator.getCaptureTimestamp());
-                //System.out.println(limelightPose.get());
-                //System.out.println("tx is: " + tx.getDouble(0));
-                //System.out.println("ty is: " + ty.getDouble(0));
-                //System.out.println("ta is: " + ta.getDouble(0.20)); 
-                //System.out.println("Hello World");
             }
-        }*/
-    //read values periodically
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
-    double area = ta.getDouble(0.20);
-    //post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
+        }
     }
     
     /**
