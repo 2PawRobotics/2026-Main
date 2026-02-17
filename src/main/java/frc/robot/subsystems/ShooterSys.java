@@ -4,18 +4,12 @@ import edu.wpi.first.units.measure.MutAngle;
 import edu.wpi.first.units.measure.MutAngularVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.RobotContainer;
-import frc.robot.commands.drivetrain.RunShooterFFCmd;
 import frc.robot.util.limelight.LimelightHelpers;
-import frc.robot.util.limelight.LimelightHelpers.LimelightTarget_Barcode;
 import frc.robot.Constants.CANDevices;
 
 import static edu.wpi.first.units.Units.Radians;
@@ -24,7 +18,6 @@ import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
-import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -115,7 +108,7 @@ public class ShooterSys extends SubsystemBase {
     }
 
     public void stop() {
-        shooterController.setReference(0, ControlType.kVelocity);
+        shooterController.setSetpoint(0, ControlType.kVelocity);
     }
 
     public double getDistanceInInches() {

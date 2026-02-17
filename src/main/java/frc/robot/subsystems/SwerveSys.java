@@ -115,7 +115,7 @@ public class SwerveSys extends SubsystemBase {
             getModulePositions(),
             new Pose2d(),
             VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(0.25)),
-            VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(40.0)));
+            VecBuilder.fill(0.35, 0.35, Units.degreesToRadians(40.0)));
 
     private final LimelightPoseEstimator[] limelightPoseEstimators = new LimelightPoseEstimator[] {
         new LimelightPoseEstimator(VisionConstants.frontLimelightName)
@@ -185,12 +185,14 @@ public class SwerveSys extends SubsystemBase {
         // Updates the odometry every 20ms
         poseEstimator.update(imu.getRotation2d(), getModulePositions());
 
-        for(LimelightPoseEstimator limelightPoseEstimator : limelightPoseEstimators) {
+        if(DriverStation.isTeleop()){
+            for(LimelightPoseEstimator limelightPoseEstimator : limelightPoseEstimators) {
             Optional<Pose2d> limelightPose = limelightPoseEstimator.getRobotPose();
             if(limelightPose.isPresent()) {
                 poseEstimator.addVisionMeasurement(limelightPose.get(), limelightPoseEstimator.getCaptureTimestamp());
             }
         }
+    }
     }
     
     /**
@@ -278,7 +280,7 @@ public class SwerveSys extends SubsystemBase {
      * Sets the desired state for each swerve module.
      * <p>Uses PID and feedforward control (closed-loop) to control the linear and rotational values for the modules.
      * 
-     * @param moduleStates An array module states to set. The order is FL, FR, BL, BR.
+     * @param moduleStates An aray module states to set. The order is FL, FR, BL, BR.
      */
     public void setModuleStates(SwerveModuleState[] moduleStates) {
         frontLeftMod.setDesiredState(moduleStates[0], false);

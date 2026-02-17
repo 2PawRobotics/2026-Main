@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RollerConstants;
 import frc.robot.Constants.CANDevices;
 
-import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -44,16 +43,27 @@ public class IntakeSys extends SubsystemBase {
 
     }
 
+    /**
+     * Sets the roller motor to the specified RPM. Positive RPMs should intake balls, while negative RPMs should outtake balls.
+     * @param rpm
+     */
     public void setRollerRPM(double rpm) {
-        rollerController.setReference(rpm, ControlType.kVelocity);
+        rollerController.setSetpoint(rpm, ControlType.kVelocity);
     }
 
+    /**
+     * A method to get the current RPM of the roller motor.
+     * @return The current RPM of the roller motor.
+     */
     public double getRollerRPM() {
         return rollerEnc.getVelocity();
     }
 
+    /**
+     * Stops the roller motor.
+     */
     public void stop() {
-        rollerController.setReference(0, ControlType.kVelocity);
+        rollerController.setSetpoint(0, ControlType.kVelocity);
     }
     
 }

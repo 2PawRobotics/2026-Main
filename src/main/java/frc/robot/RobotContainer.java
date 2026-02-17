@@ -4,21 +4,15 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.events.EventTrigger;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Constants.ButtonPanelConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.drivetrain.ArcadeDriveCmd;
@@ -35,6 +29,7 @@ import frc.robot.commands.functions.IntakeCmd;
 import frc.robot.subsystems.AgitatorSys;
 import frc.robot.commands.drivetrain.AgitatorCmd;
 import frc.robot.commands.drivetrain.AimToHubCmd;
+import frc.robot.commands.functions.IntakeStopCmd;
 
 public class RobotContainer {
     
@@ -59,6 +54,7 @@ public class RobotContainer {
     private final IntakeCmd intakeCmd;
     private final AgitatorCmd agitatorCmd;
     private final AimToHubCmd aimToHubCmd;
+    private final IntakeStopCmd intakeStopCmd;
 
     //Initialize auto selector.
     SendableChooser<Command> autoSelector = new SendableChooser<Command>();
@@ -67,10 +63,6 @@ public class RobotContainer {
 
     public RobotContainer() {
         RobotController.setBrownoutVoltage(DriveConstants.brownoutVoltage);
-
-        //camera = new UsbCamera("driver camera", 2);
-        
-        //CameraServer.startAutomaticCapture(camera);
 
         // Register Commands to PathPlanner
         NamedCommands.registerCommand("Aim", new AutoAimCmd(swerveSys));
@@ -90,12 +82,14 @@ public class RobotContainer {
         intakeCmd = new IntakeCmd(intakeSys);
         agitatorCmd = new AgitatorCmd(agitatorSys);
         aimToHubCmd = new AimToHubCmd(swerveSys);
+        intakeStopCmd = new IntakeStopCmd(intakeSys);
 
         //Add Requirements
     // pointCmd already requires the lightweight rotation subsystem. No need to add SwerveSys requirement.
             
 
-        //new EventTrigger("Aim").whileTrue(new PointCmd(swerveSys));
+        new EventTrigger("Aim").onTrue(new IntakeCmd(intakeSys));
+        new EventTrigger("Aim").onFalse(new IntakeStopCmd(intakeSys));
 
 
         configDriverBindings();

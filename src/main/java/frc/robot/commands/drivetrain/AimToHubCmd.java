@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.Constants.PivotConstants;
-import frc.robot.Constants.RollerConstants;
 import frc.robot.subsystems.SwerveSys;
 
 public class AimToHubCmd extends Command {
@@ -51,13 +49,6 @@ public class AimToHubCmd extends Command {
     
     @Override
     public void execute() {
-       //double lateralDistanceToTargetMeters = swerveSys.getPose().getTranslation().getDistance(targetTranslation);
-
-        /*double hypotDistanceToTargetMetes = 
-		Math.hypot(lateralDistanceToTargetMeters, FieldConstants.speakerTargetHeightMeters - PivotConstants.pivotHeightMeters);*/
-
-        //double timeOfFlightSecs = hypotDistanceToTargetMetes / (RollerConstants.fireRPM * RollerConstants.metersPerSecondPerRPM);
-
 		Translation2d extrapolation = new Translation2d(
             swerveSys.getFieldRelativeVelocity().getX(),
             swerveSys.getFieldRelativeVelocity().getY());
