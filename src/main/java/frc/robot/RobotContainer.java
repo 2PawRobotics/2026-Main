@@ -34,6 +34,7 @@ import frc.robot.subsystems.IntakeSys;
 import frc.robot.commands.functions.IntakeCmd;
 import frc.robot.subsystems.AgitatorSys;
 import frc.robot.commands.drivetrain.AgitatorCmd;
+import frc.robot.commands.drivetrain.AimToHubCmd;
 
 public class RobotContainer {
     
@@ -57,6 +58,7 @@ public class RobotContainer {
     private final RunShooterFFCmd runShooterFFCmd;
     private final IntakeCmd intakeCmd;
     private final AgitatorCmd agitatorCmd;
+    private final AimToHubCmd aimToHubCmd;
 
     //Initialize auto selector.
     SendableChooser<Command> autoSelector = new SendableChooser<Command>();
@@ -87,6 +89,7 @@ public class RobotContainer {
         runShooterFFCmd = new RunShooterFFCmd(shooterSys);
         intakeCmd = new IntakeCmd(intakeSys);
         agitatorCmd = new AgitatorCmd(agitatorSys);
+        aimToHubCmd = new AimToHubCmd(swerveSys);
 
         //Add Requirements
     // pointCmd already requires the lightweight rotation subsystem. No need to add SwerveSys requirement.
@@ -124,6 +127,7 @@ public class RobotContainer {
     driverController.leftBumper().whileTrue(new IntakeCmd(intakeSys));
     driverController.a().whileTrue(new AgitatorCmd(agitatorSys));
     driverController.rightTrigger().whileTrue(new RunShooterFFCmd(shooterSys));
+    driverController.b().whileTrue(aimToHubCmd);
     //driverController.a().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     //driverController.b().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
     //driverController.y().whileTrue(shooterSys.sysIdDynamic(SysIdRoutine.Direction.kForward));

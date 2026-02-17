@@ -287,12 +287,7 @@ public class Constants {
     }
 
     public class FieldConstants {
-        public static final Translation2d blueAllianceSpeakerPose = new Translation2d(0.0, 5.55);
-        public static final Translation2d redAllianceSpeakerPose = new Translation2d(16.54, 5.55);
-
-        public static final Translation2d blueReefPose = new Translation2d(4.5, 4);
-        public static final Translation2d redReefPose = new Translation2d(13, 4);
-
-        public static final double speakerTargetHeightMeters = 2.03;
+        public static final Translation2d blueAllianceHubPose = new Translation2d(4.61, 4.02);
+        public static final Translation2d redAllianceHubPose = new Translation2d(11.9, 4.02);
     }
 }
