@@ -63,7 +63,7 @@ public class SwerveModule extends SubsystemBase {
 
         SparkFlexConfig driveConfig = new SparkFlexConfig();
         driveConfig 
-            .inverted(true)
+            .inverted(false)
             .idleMode(IdleMode.kBrake);
         driveConfig.encoder
             .positionConversionFactor(DriveConstants.driveMetersPerEncRev)

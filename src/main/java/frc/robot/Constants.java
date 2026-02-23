@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.util.Color;
@@ -12,18 +11,7 @@ import edu.wpi.first.wpilibj.util.Color;
 public class Constants {
 
     public static final class ButtonPanelConstants {
-        public static final int lvl4ReefRightPort = 1;
-        public static final int lvl4ReefLeftPort = 2;
-        public static final int lvl3ReefRightPort = 3;
-        public static final int lvl3ReefLeftPort = 4;
-        public static final int lvl2ReefRightPort = 5;
-        public static final int lvl2ReefLeftPort = 6;
-        public static final int lvl1ReefLeftPort = 7;
-        public static final int lvl1ReefRightPort = 8;
-        public static final int releaseCoralPort = 9;
-        public static final int conveyorControlPort = 10;
-        public static final int conveyorRunPort = 11;
-        public static final int joystickPort = 13;
+        
     }
 
     public static final class CANDevices {
@@ -52,23 +40,14 @@ public class Constants {
         public static final int backRightSteerMtrId = 7;
         public static final int backRightDriveMtrId = 8;
 
-        //Rollers
-        public static final int m_topLeftRollerMtrId = 19;
-        public static final int m_bottomLeftRollerMtrId = 18;
-        public static final int m_topRightRollerMtrId = 17;
-        public static final int m_bottomRightRollerMtrId = 16;
-        public static final int m_rightIntakeMtrId = 15;
-        public static final int m_leftIntakeMtrId = 14;
+        // Roller
+        public static final int rollerMtrId = 14;
 
-        //Lift
-        public static final int m_rightLiftMtrId = 30000;
-        public static final int m_leftLiftMtrId = 30001;
+        // Shooter
+        public static final int shooterMtrId = 15;
 
-        //Conveyor
-        public static final int m_testMtrId = 21;
-
-        //EndEffector
-        public static final int m_coralReleaseSevCnl = 9;
+        // Agitator
+        public static final int agitatorMtrId = 16;
        
     }
 
@@ -214,12 +193,31 @@ public class Constants {
     }
 
     public class RollerConstants {
-    
-        public static final int stallLimitAmps = 25;
-        public static final int freeLimitAmps = 50;
-        public static final int maxRPM = 1;
 
-        //public static final double gearRatio = 5;
+        public static final double rollerRPM = 1750;
+
+        public static final double rollerkP = 0.0005;
+        public static final double rollerkI = 0;
+        public static final double rollerkD = 0;
+
+    
+        public static final int stallLimitAmps = 80;
+        public static final int freeLimitAmps = 80;
+        public static final int maxRPM = 6784;
+
+    }
+
+    public class ShooterConstants {
+        
+        public static final double shooterRPM = 4000;
+
+        public static final double shooterkP = 0;
+        public static final double shooterkI = 0;
+        public static final double shooterkD = 0;
+
+        public static final int stallLimitAmps = 80;
+        public static final int freeLimitAmps = 40;
+        public static final int maxRPM = 6784;
 
     }
 
@@ -281,15 +279,14 @@ public class Constants {
         public static final String backLimelightName = "limelight";
 
         public static final double targetAreaPercentThreshold = 0.15;
+
+        public static final double tagHeight = 44.5;
+        public static final double limelightHeight = 21.25;
+        public static final double limelightAngle = 25.25;
     }
 
     public class FieldConstants {
-        public static final Translation2d blueAllianceSpeakerPose = new Translation2d(0.0, 5.55);
-        public static final Translation2d redAllianceSpeakerPose = new Translation2d(16.54, 5.55);
-
-        public static final Translation2d blueReefPose = new Translation2d(4.5, 4);
-        public static final Translation2d redReefPose = new Translation2d(13, 4);
-
-        public static final double speakerTargetHeightMeters = 2.03;
+        public static final Translation2d blueAllianceHubPose = new Translation2d(4.61, 4.02);
+        public static final Translation2d redAllianceHubPose = new Translation2d(11.9, 4.02);
     }
 }

@@ -4,20 +4,15 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.events.EventTrigger;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Constants.ButtonPanelConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.drivetrain.ArcadeDriveCmd;
@@ -25,16 +20,25 @@ import frc.robot.commands.drivetrain.LockCmd;
 import frc.robot.subsystems.SwerveSys;
 import frc.robot.subsystems.SwerveRotation;
 import frc.robot.commands.drivetrain.PointCmd;
-import frc.robot.commands.drivetrain.TestCmd;
-import frc.robot.subsystems.TestSys;
+import frc.robot.commands.drivetrain.AutoShootCmd;
+import frc.robot.subsystems.ShooterSys;
 import frc.robot.commands.drivetrain.AutoAimCmd;
+import frc.robot.commands.drivetrain.RunShooterFFCmd;
+import frc.robot.subsystems.IntakeSys;
+import frc.robot.commands.functions.IntakeCmd;
+import frc.robot.subsystems.AgitatorSys;
+import frc.robot.commands.drivetrain.AgitatorCmd;
+import frc.robot.commands.drivetrain.AimToHubCmd;
+import frc.robot.commands.functions.IntakeStopCmd;
 
 public class RobotContainer {
     
     // Initialize subsystems.
     private final SwerveSys swerveSys = new SwerveSys();
     private final SwerveRotation swerveRotation = new SwerveRotation(swerveSys);
-    private final TestSys testSys = new TestSys();
+    private final ShooterSys shooterSys = new ShooterSys();
+    private final IntakeSys intakeSys = new IntakeSys();
+    private final AgitatorSys agitatorSys = new AgitatorSys();
 
     //Initialize joysticks.
     public final static CommandXboxController driverController = new CommandXboxController(ControllerConstants.driverGamepadPort);
@@ -44,24 +48,26 @@ public class RobotContainer {
 
     //Name Commands
     private final PointCmd pointCmd;
-    private final TestCmd testCmd;
+    private final AutoShootCmd testCmd;
     private final AutoAimCmd autoPointCmd;
+    private final RunShooterFFCmd runShooterFFCmd;
+    private final IntakeCmd intakeCmd;
+    private final AgitatorCmd agitatorCmd;
+    private final AimToHubCmd aimToHubCmd;
+    private final IntakeStopCmd intakeStopCmd;
 
     //Initialize auto selector.
     SendableChooser<Command> autoSelector = new SendableChooser<Command>();
 
-    private UsbCamera camera;
+    //private UsbCamera camera;
 
     public RobotContainer() {
         RobotController.setBrownoutVoltage(DriveConstants.brownoutVoltage);
 
-        camera = new UsbCamera("driver camera", 2);
-        
-        CameraServer.startAutomaticCapture(camera);
-
         // Register Commands to PathPlanner
         NamedCommands.registerCommand("Aim", new AutoAimCmd(swerveSys));
-        NamedCommands.registerCommand("Shoot", new TestCmd(testSys));
+        NamedCommands.registerCommand("Shoot", new AutoShootCmd(shooterSys));
+        NamedCommands.registerCommand("Intake", new IntakeCmd(intakeSys));
 
         // Build an auto chooser. This will use Commands.none() as the default option.
         autoSelector = AutoBuilder.buildAutoChooser();
@@ -70,22 +76,30 @@ public class RobotContainer {
 
     //Initalize Commands
         pointCmd = new PointCmd(swerveRotation);
-        testCmd = new TestCmd(testSys);
+        testCmd = new AutoShootCmd(shooterSys);
         autoPointCmd = new AutoAimCmd(swerveSys);
+        runShooterFFCmd = new RunShooterFFCmd(shooterSys);
+        intakeCmd = new IntakeCmd(intakeSys);
+        agitatorCmd = new AgitatorCmd(agitatorSys);
+        aimToHubCmd = new AimToHubCmd(swerveSys);
+        intakeStopCmd = new IntakeStopCmd(intakeSys);
 
         //Add Requirements
     // pointCmd already requires the lightweight rotation subsystem. No need to add SwerveSys requirement.
             
 
-        //new EventTrigger("Aim").whileTrue(new PointCmd(swerveSys));
+        new EventTrigger("Aim").onTrue(new IntakeCmd(intakeSys));
+        new EventTrigger("Aim").onFalse(new IntakeStopCmd(intakeSys));
 
 
         configDriverBindings();
-        configButtonPanel();
+        configOperatorBindings();
 
     }
 
-    private void configButtonPanel() {
+    private void configOperatorBindings() {
+
+        
     }
 
     public void configDriverBindings() {
@@ -104,6 +118,14 @@ public class RobotContainer {
            .whileTrue(new LockCmd(swerveSys));
 
     driverController.rightBumper().whileTrue(new PointCmd(swerveRotation));
+    driverController.leftBumper().whileTrue(new IntakeCmd(intakeSys));
+    driverController.a().whileTrue(new AgitatorCmd(agitatorSys));
+    driverController.rightTrigger().whileTrue(new RunShooterFFCmd(shooterSys));
+    driverController.b().whileTrue(aimToHubCmd);
+    //driverController.a().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    //driverController.b().whileTrue(shooterSys.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    //driverController.y().whileTrue(shooterSys.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    //driverController.x().whileTrue(shooterSys.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {
@@ -137,6 +159,11 @@ public class RobotContainer {
         SmartDashboard.putNumber("BR offset CANCoder degrees", swerveSys.getCanCoderAngles()[3].getDegrees() - DriveConstants.backRightModOffset.getDegrees());
 
         SmartDashboard.putNumber("drive voltage", swerveSys.getAverageDriveVoltage());
+
+        SmartDashboard.putNumber("Limelight Distance Ft", shooterSys.getDistanceInFeet());
+        SmartDashboard.putNumber("Limelight Distance In", shooterSys.getDistanceInInches());
+        SmartDashboard.putNumber("Shooter RPM", shooterSys.getShooterRPM());
+        SmartDashboard.putNumber("Desired Shooter RPM", shooterSys.desiredRPM());
 
     }   
 }
